@@ -1,0 +1,314 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@100;300;400;700&display=swap');
+
+/* Colors */
+:root {
+    --color-red: #ef4444;
+    --color-orange: #f97316;
+    --color-yellow: #eab308;
+    --color-green: #22c55e;
+    --color-blue: #3b82f6;
+    --color-gray: #6b7280;
+}
+
+/* Variables */
+:root {
+    --cell-width: 1rem;
+    --cell-height: 1rem;
+
+    --block-transition: transform 0.0625s ease-out;
+
+    --color: #334155;
+    --bg: #e5e7eb;
+    
+    --bg-container: #f8fafc;
+    --bg-grid: none;
+
+    --bg-empty: transparent;
+    --bg-inactive: #cbd5e1;
+    --bg-completed: #3b82f6;
+    --border-color: #cbd5e1;
+
+    --btn-bg: #e5e7eb;
+    --btn-bg-hover: #cbd5e1;
+
+    --cell-border: .5px solid rgba(0,0,0,.05);
+
+    --row-bg-hover: #e5e7eb;
+
+    --message-color: #f8fafc;
+    --message-bg: #334155b3;
+
+    --key-bg: #f8fafc;
+    --key-color: #334155;
+    --key-border: 4px solid #cbd5e1;
+    /* 334155 */
+}
+
+/* Dark Mode */
+:root[class*=night-mode] {
+    --color: #f8fafc;
+    --bg: #020617;
+
+    --bg-container: #111827;
+    --bg-grid: none;
+
+    --bg-empty: #111827;
+    --bg-inactive: #334155;
+    --bg-completed: #3b82f6;
+    --border-color: #334155;
+
+    --btn-bg: #020617;
+    --btn-bg-hover: #334155;
+
+    --cell-border: .5px solid rgba(255,255,255,.05);
+
+    --row-bg-hover: #020617;
+
+    --message-color: #f8fafc;
+    --message-bg: #334155b3;
+}
+
+/* Document */
+html,
+body {
+    margin: 1rem;
+    padding: 0;
+    font-family: Urbanist, sans-serif;
+    background: var(--bg);
+    color: var(--color);
+    overscroll-behavior: none;
+}
+
+#tetris {
+    display: grid;
+    grid-template-columns: fit-content() fit-content();
+    grid-template-rows: fit-content() 50%;
+    grid-template-areas:
+        "heading heading"
+        "game scoreboard"
+        "game nextblock"
+        "game actions"
+        "history history";
+    grid-gap: 1rem;
+
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+    margin: 0 auto;
+
+    padding: 1.4rem 2rem;
+    padding-bottom: 1rem;
+    background: var(--bg-container);
+    border-radius: 1rem;
+}
+
+/* Heading */
+#heading {
+    grid-area: heading;
+}
+
+#heading h1 {
+    margin: 0;
+}
+
+/* Scoreboard */
+#scoreboard {
+    grid-area: scoreboard;
+    align-self: start;
+
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    padding: 1rem 1.5rem;
+
+    border: 1px solid var(--border-color);
+}
+
+.scoreboard-score,
+.scoreboard-lines {
+    font-weight: bold;
+}
+
+.scoreboard-score {
+    margin-bottom: .75rem;
+}
+
+/* Next Block */
+#nextblock {
+    align-self: center;
+
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--border-color);
+
+    --cell-border: none;
+}
+
+#nextblock .title {
+    margin-bottom: .75rem;
+}
+
+/* Grid */
+#grid {
+    grid-area: game;
+
+    --width: 0;
+    --height: 0;
+
+    position: relative;
+    overflow: hidden;
+
+    background: var(--bg-grid);
+    background-size: cover;
+}
+
+.tetris-table {
+    border-spacing: 0;
+}
+
+#grid .tetris-table {
+    border: 1px solid var(--border-color);
+}
+
+.tetris-table tr td {
+    margin: 0;
+    padding: 0;
+
+    width: var(--cell-width);
+    height: var(--cell-height);
+
+    --color: none;
+    background: var(--color);
+
+    border: var(--cell-border);
+}
+
+/* Animations */
+.completed-animation {
+    --color-completed: #ddd;
+    animation: completed .9s ease-in-out;
+}
+
+@keyframes completed {
+    0% {
+        background: var(--bg-inactive);
+    }
+
+    40% {
+        background: var(--color-completed);
+    }
+
+    80% {
+        background: var(--bg-inactive);
+    }
+}
+
+/* Actions */
+#actions {
+    grid-area: actions;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    align-self: end;
+}
+
+#actions button {
+    font-size: .8rem;
+    padding: 0.8rem 1.6rem;
+
+    font-size: .7rem;
+    padding: 0.7rem 1.4rem;
+    background: var(--btn-bg);
+    color: var(--color);
+    border: none;
+}
+#actions button:hover {
+    background: var(--btn-bg-hover);
+}
+
+/* History */
+#history {
+    grid-area: history;
+    display: none;
+}
+
+#history.active {
+    display: block;
+}
+
+#history table {
+    width: 100%;
+    border-spacing: 0;
+}
+
+#history th,
+#history td {
+    text-align: left;
+    padding: 0.5rem 1rem;
+}
+
+#history th {
+    border-bottom: 1px solid var(--border-color);
+}
+
+#history tr:hover > td {
+    background: var(--row-bg-hover);
+}
+
+/* Message */
+#message {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 2rem;
+
+    color: var(--message-color);
+    background: var(--message-bg);
+
+    font-size: 1.5rem;
+    visibility: hidden;
+
+    opacity: 0;
+
+    transition: opacity .1s ease-out;
+}
+
+#message.active {
+    visibility: visible;
+    opacity: 1;
+
+    backdrop-filter: blur(5px);
+}
+
+/* Keys */
+.key {
+    display: inline-block;
+
+    padding: 0.5rem;
+    margin: .2rem;
+    width: 1rem;
+
+    color: var(--key-color);
+    background: var(--key-bg);
+    border: var(--key-border);
+    
+    font-size: 1rem;
+    line-height: 100%;
+    text-align: center;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.key img {
+    width: 1rem;
+    height: 1rem;
+    vertical-align: middle;
+}

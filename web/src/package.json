@@ -1,0 +1,19 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tetris.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild tetris.js --bundle --outfile=../app.js --minify --sourcemap --target=chrome58,firefox57,safari11,edge16",
+    "dev": "esbuild tetris.js --bundle --outfile=../app.js --minify --sourcemap --target=chrome58,firefox57,safari11,edge16 --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "0.19.11"
+  },
+  "dependencies": {
+    "moment": "^2.30.1"
+  }
+}
