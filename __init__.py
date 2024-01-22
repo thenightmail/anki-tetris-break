@@ -45,7 +45,7 @@ class tetrisWidget:
             mw.mainLayout.insertWidget(1, self.splitter)
             
             self.injected = True
-            self.openSidebar()
+            self.closeSidebar()
             
             self.threshold = int(consts.CONFIG["cardsToPlay"])
             
@@ -98,7 +98,6 @@ gui_hooks.reviewer_will_end.append(collapseAddon)
 # Save before closing
 gui_hooks.profile_will_close.append(collapseAddon)
 
-# Handle move
 def on_js_message(handled, msg, context):
     
     if msg.startswith("tetris::done"):

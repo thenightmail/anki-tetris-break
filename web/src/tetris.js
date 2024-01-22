@@ -111,9 +111,7 @@ const tetris = new class Tetris {
         this.start()
     }
     loadSettings(settings) {
-        console.table(settings)
         if(settings.backgroundImage != "") {
-            // console.log(settings.backgroundImage)
             this.usePictureAsBackground(settings.backgroundImage)
         }
     }
