@@ -69,6 +69,13 @@
     --message-bg: #334155b3;
 }
 
+/* Picture as background */
+.bg-img {
+    --bg-inactive: transparent;
+    --bg-empty: #111827;
+    --bg-grid: url("");
+}
+
 /* Document */
 html,
 body {

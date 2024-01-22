@@ -110,6 +110,18 @@ const tetris = new class Tetris {
         player.loadPlayerData(data.player);
         this.start()
     }
+    loadSettings(settings) {
+        console.table(settings)
+        if(settings.backgroundImage != "") {
+            // console.log(settings.backgroundImage)
+            this.usePictureAsBackground(settings.backgroundImage)
+        }
+    }
+
+    usePictureAsBackground(src) {
+        this.DOMElement.classList.add('bg-img');
+        this.DOMElement.style.setProperty("--bg-grid", `url("${src}")`)
+    }
 
     // Input event listener
     __commandDown(ev) {

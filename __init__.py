@@ -68,6 +68,7 @@ class tetrisWidget:
         with open(consts.PATH_TO_DATAFILE) as f:
             data = f.read()
             js = f"""
+            window.tetris.loadSettings({json.dumps(consts.CONFIG)})
             window.tetris.load({data})
             """
             self.webview.eval(js)
