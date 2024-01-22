@@ -1,15 +1,13 @@
 import os
 from aqt.qt import (
-    QDialogButtonBox,
+    Qt,
     QVBoxLayout,
     QLabel,
     QDialog,
     QLineEdit,
     QFileDialog,
     QPushButton,
-    QPixmap,
-    Qt,
-    QFrame
+    QPixmap
 )
 from aqt import mw
 
@@ -18,6 +16,7 @@ import shutil
 from . import consts
 
 class SettingsDialog(QDialog):
+    hasBgImageToBeCopied = False
     def __init__(self):
         super().__init__()
 
@@ -31,15 +30,16 @@ class SettingsDialog(QDialog):
         self.txtCardsToPlay = QLineEdit()
         self.layout.addWidget(self.txtCardsToPlay)
 
-        self.separator1 = QFrame()
-        self.separator1.setFrameShape(QFrame.HLine)
-        self.layout.addWidget(self.separator1)
+        # self.separator1 = QFrame()
+        # self.separator1.setFrameShape(QFrame.HLine)
+        # self.layout.addWidget(self.separator1)
 
         # Background image
-        self.hasBgImageToBeCopied = False
         self.backgroundImage = consts.CONFIG["backgroundImage"]
-        self.backgroundImagePath = consts.ADDON_PATH + "/web/" + consts.CONFIG["backgroundImage"]
-        
+        self.backgroundImagePath = (
+            consts.ADDON_PATH + "/web/" + consts.CONFIG["backgroundImage"]
+        )
+
         self.lbBgImg = QLabel("Background image")
         self.layout.addWidget(self.lbBgImg)
 
@@ -50,38 +50,50 @@ class SettingsDialog(QDialog):
             QPixmap(self.backgroundImagePath).scaled(
                 self.previewBgImg.size(),
                 Qt.AspectRatioMode.KeepAspectRatio,
-                transformMode=Qt.SmoothTransformation,
+                transformMode=Qt.TransformationMode.SmoothTransformation,
             )
         )
         self.layout.addWidget(self.previewBgImg)
 
         self.btnBgImg = QPushButton("Select / Replace Image", self)
         self.btnBgImg.clicked.connect(self.selectBgImg)
-        
+
         self.btnBgImgClear = QPushButton("Clear Image", self)
         self.btnBgImgClear.clicked.connect(self.clearBgImg)
         self.layout.addWidget(self.btnBgImg)
         self.layout.addWidget(self.btnBgImgClear)
 
-        QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
-        self.buttonBox = QDialogButtonBox(QBtn)
-        self.buttonBox.accepted.connect(self.accept)
-        self.buttonBox.rejected.connect(self.reject)
-        self.layout.addWidget(self.buttonBox)
+        # Save and cancel buttons
+        self.btnSave = QPushButton("Save Settings", self)
+        self.btnSave.clicked.connect(self.save)
+        self.layout.addWidget(self.btnSave)
+        self.btnCancel = QPushButton("Cancel", self)
+        self.btnCancel.clicked.connect(self.reject)
+        self.layout.addWidget(self.btnCancel)
 
         self.setLayout(self.layout)
+
+    def save(self):
+        saveSettings(
+            {
+                "cardsToPlay": self.txtCardsToPlay.text(),
+                "backgroundImage": self.backgroundImage,
+            }
+        )
+        self.accept()
 
     def clearBgImg(self):
         self.hasBgImageToBeCopied = False
         self.backgroundImage = ""
         self.previewBgImg.setPixmap(QPixmap())
-        
+
     def selectBgImg(self):
         bgImgFile, _ = QFileDialog.getOpenFileName(
             self, "Open File", "", "All Files (*.*)"
         )
+        
 
-        if bgImgFile:
+        if bgImgFile != "":
             ext = os.path.splitext(bgImgFile)[1]
             self.hasBgImageToBeCopied = True
             self.bgImageToBeCopied = {
@@ -93,31 +105,25 @@ class SettingsDialog(QDialog):
                 QPixmap(bgImgFile).scaled(
                     self.previewBgImg.size(),
                     Qt.AspectRatioMode.KeepAspectRatio,
-                    transformMode=Qt.SmoothTransformation,
+                    transformMode=Qt.TransformationMode.SmoothTransformation,
                 )
             )
 
-
 dlg = SettingsDialog()
 
-
 def openSettings():
-    dlg.txtCardsToPlay.setText(consts.CONFIG["cardsToPlay"])
-    if dlg.exec():
-        if dlg.hasBgImageToBeCopied == True:
-            shutil.copyfile(
-                dlg.bgImageToBeCopied["source"], dlg.bgImageToBeCopied["destination"]
-            )
-            dlg.backgroundImage = os.path.realpath(dlg.backgroundImage, consts.ADDON_PATH + '/web/')
-        saveSettings(
-            {
-                "cardsToPlay": dlg.txtCardsToPlay.text(),
-                "backgroundImage": dlg.backgroundImage,
-            }
-        )
-
+    dlg.txtCardsToPlay.setText(str(consts.CONFIG["cardsToPlay"]))
+    dlg.exec()
 
 def saveSettings(settings):
+    if dlg.hasBgImageToBeCopied == True:
+        shutil.copyfile(
+            dlg.bgImageToBeCopied["source"], dlg.bgImageToBeCopied["destination"]
+        )
+        bgImg = os.path.relpath(
+            dlg.bgImageToBeCopied["destination"], consts.ADDON_PATH + "/web/"
+        )
+        dlg.backgroundImage = bgImg
+        settings["backgroundImage"] = bgImg
     mw.addonManager.writeConfig(consts.ADDON_NAME, settings)
     consts.CONFIG = mw.addonManager.getConfig(consts.ADDON_NAME)
-
