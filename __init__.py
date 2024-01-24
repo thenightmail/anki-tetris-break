@@ -54,6 +54,10 @@ class tetrisWidget:
         self.webview.load(QUrl(url))
         
     def openSidebar(self):
+<<<<<<< HEAD
+=======
+        consts.LINES_CLEARED = 0
+>>>>>>> a5b38c4 (Commit)
         self.webview.setFixedWidth(consts.PANEL_WIDTH)
     def closeSidebar(self):
         self.webview.setFixedWidth(0)
@@ -100,8 +104,19 @@ gui_hooks.profile_will_close.append(collapseAddon)
 
 def on_js_message(handled, msg, context):
     
+<<<<<<< HEAD
     if msg.startswith("tetris::done"):
         tetris.closeSidebar()
+=======
+    # if msg.startswith("tetris::done"):
+    #     tetris.closeSidebar()
+    #     return True, None
+    if msg.startswith("tetris::linesCleared"):
+        print(msg)
+        consts.LINES_CLEARED += int(msg.replace("tetris::linesCleared::", ""))
+        if(consts.LINES_CLEARED >= int(consts.CONFIG["linesPerPlay"])):
+            tetris.closeSidebar()
+>>>>>>> a5b38c4 (Commit)
         return True, None
     
     if msg.startswith("tetris::save"):

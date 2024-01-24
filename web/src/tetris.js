@@ -315,7 +315,12 @@ const tetris = new class Tetris {
             }
         }
         setTimeout(() => {
+<<<<<<< HEAD
             pycmd('tetris::done')
+=======
+            // pycmd('tetris::done')
+            pycmd('tetris::linesCleared::' + completedLines.length)
+>>>>>>> a5b38c4 (Commit)
         }, 250)
     }
 

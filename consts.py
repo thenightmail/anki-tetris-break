@@ -21,6 +21,15 @@ CONFIG = mw.addonManager.getConfig(ADDON_NAME)
 if(len(CONFIG) == 0):
     CONFIG = {
         "cardsToPlay": 1,
+<<<<<<< HEAD
         "backgroundImage": ""
     }
     mw.addonManager.writeConfig(ADDON_NAME, CONFIG)
+=======
+        "linesPerPlay": 1,
+        "backgroundImage": ""
+    }
+    mw.addonManager.writeConfig(ADDON_NAME, CONFIG)
+
+LINES_CLEARED = 0;
+>>>>>>> a5b38c4 (Commit)

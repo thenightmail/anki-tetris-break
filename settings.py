@@ -7,7 +7,11 @@ from aqt.qt import (
     QLineEdit,
     QFileDialog,
     QPushButton,
+<<<<<<< HEAD
     QPixmap
+=======
+    QPixmap,
+>>>>>>> a5b38c4 (Commit)
 )
 from aqt import mw
 
@@ -17,6 +21,10 @@ from . import consts
 
 class SettingsDialog(QDialog):
     hasBgImageToBeCopied = False
+<<<<<<< HEAD
+=======
+
+>>>>>>> a5b38c4 (Commit)
     def __init__(self):
         super().__init__()
 
@@ -30,6 +38,15 @@ class SettingsDialog(QDialog):
         self.txtCardsToPlay = QLineEdit()
         self.layout.addWidget(self.txtCardsToPlay)
 
+<<<<<<< HEAD
+=======
+        # Lines per play
+        self.lbLinesPerPlay = QLabel("Number of lines to be cleared per play")
+        self.layout.addWidget(self.lbLinesPerPlay)
+        self.txtLinesPerPlay = QLineEdit()
+        self.layout.addWidget(self.txtLinesPerPlay)
+
+>>>>>>> a5b38c4 (Commit)
         # self.separator1 = QFrame()
         # self.separator1.setFrameShape(QFrame.HLine)
         # self.layout.addWidget(self.separator1)
@@ -77,6 +94,10 @@ class SettingsDialog(QDialog):
         saveSettings(
             {
                 "cardsToPlay": self.txtCardsToPlay.text(),
+<<<<<<< HEAD
+=======
+                "linesPerPlay": self.txtLinesPerPlay.text(),
+>>>>>>> a5b38c4 (Commit)
                 "backgroundImage": self.backgroundImage,
             }
         )
@@ -91,7 +112,10 @@ class SettingsDialog(QDialog):
         bgImgFile, _ = QFileDialog.getOpenFileName(
             self, "Open File", "", "All Files (*.*)"
         )
+<<<<<<< HEAD
         
+=======
+>>>>>>> a5b38c4 (Commit)
 
         if bgImgFile != "":
             ext = os.path.splitext(bgImgFile)[1]
@@ -113,8 +137,15 @@ dlg = SettingsDialog()
 
 def openSettings():
     dlg.txtCardsToPlay.setText(str(consts.CONFIG["cardsToPlay"]))
+<<<<<<< HEAD
     dlg.exec()
 
+=======
+    dlg.txtLinesPerPlay.setText(str(consts.CONFIG["linesPerPlay"]))
+    dlg.exec()
+
+
+>>>>>>> a5b38c4 (Commit)
 def saveSettings(settings):
     if dlg.hasBgImageToBeCopied == True:
         shutil.copyfile(
@@ -126,4 +157,8 @@ def saveSettings(settings):
         dlg.backgroundImage = bgImg
         settings["backgroundImage"] = bgImg
     mw.addonManager.writeConfig(consts.ADDON_NAME, settings)
+<<<<<<< HEAD
     consts.CONFIG = mw.addonManager.getConfig(consts.ADDON_NAME)
+=======
+    consts.CONFIG = mw.addonManager.getConfig(consts.ADDON_NAME)
+>>>>>>> a5b38c4 (Commit)
