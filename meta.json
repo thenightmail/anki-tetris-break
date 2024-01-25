@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"name": "Tetris Break for Anki", "mod": 1705941584, "min_point_version": 231201, "max_point_version": 231201, "branch_index": 0, "disabled": false}
-=======
-{"name": "Tetris Break for Anki", "mod": 1705967010, "min_point_version": 231201, "max_point_version": 231201, "branch_index": 0, "disabled": false}
->>>>>>> a5b38c4 (Commit)
+{"name": "Tetris Break for Anki", "mod": 1844476877, "min_point_version": 231201, "max_point_version": 231201, "branch_index": 0, "disabled": false, "conflicts": [], "update_enabled": true}

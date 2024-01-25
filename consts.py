@@ -15,21 +15,16 @@ DARK_MODE = theme_manager.night_mode
 PANEL_WIDTH = 600
 
 PATH_TO_HTML = f"""web/index.html?dark={DARK_MODE}"""
-PATH_TO_DATAFILE = f"""{ADDON_PATH}/data.json"""
+PATH_TO_DATAFILE = f"""{ADDON_PATH}/user_files/data.json"""
 
 CONFIG = mw.addonManager.getConfig(ADDON_NAME)
 if(len(CONFIG) == 0):
     CONFIG = {
         "cardsToPlay": 1,
-<<<<<<< HEAD
-        "backgroundImage": ""
-    }
-    mw.addonManager.writeConfig(ADDON_NAME, CONFIG)
-=======
         "linesPerPlay": 1,
-        "backgroundImage": ""
+        "backgroundImage": "",
+        "highContrast": False
     }
     mw.addonManager.writeConfig(ADDON_NAME, CONFIG)
 
 LINES_CLEARED = 0;
->>>>>>> a5b38c4 (Commit)

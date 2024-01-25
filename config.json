@@ -1,8 +1,6 @@
 {
-    "cardsToPlay": 1,
-<<<<<<< HEAD
-=======
+    "cardsToPlay": 50,
     "linesPerPlay": 1,
->>>>>>> a5b38c4 (Commit)
-    "backgroundImage": ""
+    "backgroundImage": "",
+    "highContrast": false
 }

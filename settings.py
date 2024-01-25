@@ -8,13 +8,15 @@ from aqt.qt import (
     QFileDialog,
     QPushButton,
     QPixmap,
+    QCheckBox
 )
 from aqt import mw
 
 import shutil
 
-from . import consts
-
+from . import consts, main
+from importlib import reload
+import sys
 
 class SettingsDialog(QDialog):
     hasBgImageToBeCopied = False
@@ -41,6 +43,12 @@ class SettingsDialog(QDialog):
         # self.separator1 = QFrame()
         # self.separator1.setFrameShape(QFrame.HLine)
         # self.layout.addWidget(self.separator1)
+
+        # High contrast
+        self.lbHighContrast = QLabel("High contrast")
+        self.layout.addWidget(self.lbHighContrast)
+        self.chkHighContrast = QCheckBox()
+        self.layout.addWidget(self.chkHighContrast)
 
         # Background image
         self.backgroundImage = consts.CONFIG["backgroundImage"]
@@ -82,13 +90,28 @@ class SettingsDialog(QDialog):
         self.setLayout(self.layout)
 
     def save(self):
-        saveSettings(
-            {
-                "cardsToPlay": self.txtCardsToPlay.text(),
-                "linesPerPlay": self.txtLinesPerPlay.text(),
-                "backgroundImage": self.backgroundImage,
-            }
-        )
+        settings = {
+            "cardsToPlay": self.txtCardsToPlay.text(),
+            "linesPerPlay": self.txtLinesPerPlay.text(),
+            "backgroundImage": self.backgroundImage,
+            "highContrast": self.chkHighContrast.isChecked(),
+        }
+        if self.hasBgImageToBeCopied == True:
+            shutil.copyfile(
+                self.bgImageToBeCopied["source"], self.bgImageToBeCopied["destination"]
+            )
+            bgImg = os.path.relpath(
+                self.bgImageToBeCopied["destination"], consts.ADDON_PATH + "/web/"
+            )
+            self.backgroundImage = bgImg
+            settings["backgroundImage"] = bgImg
+        mw.addonManager.writeConfig(consts.ADDON_NAME, settings)
+        consts.CONFIG = mw.addonManager.getConfig(consts.ADDON_NAME)
+        
+        # Reload the module with the new configuration
+        main.unload()
+        reload(sys.modules[consts.ADDON_NAME + ".main"])
+        
         self.accept()
 
     def clearBgImg(self):
@@ -117,25 +140,9 @@ class SettingsDialog(QDialog):
                 )
             )
 
-
-dlg = SettingsDialog()
-
-
-def openSettings():
-    dlg.txtCardsToPlay.setText(str(consts.CONFIG["cardsToPlay"]))
-    dlg.txtLinesPerPlay.setText(str(consts.CONFIG["linesPerPlay"]))
-    dlg.exec()
-
-
-def saveSettings(settings):
-    if dlg.hasBgImageToBeCopied == True:
-        shutil.copyfile(
-            dlg.bgImageToBeCopied["source"], dlg.bgImageToBeCopied["destination"]
-        )
-        bgImg = os.path.relpath(
-            dlg.bgImageToBeCopied["destination"], consts.ADDON_PATH + "/web/"
-        )
-        dlg.backgroundImage = bgImg
-        settings["backgroundImage"] = bgImg
-    mw.addonManager.writeConfig(consts.ADDON_NAME, settings)
-    consts.CONFIG = mw.addonManager.getConfig(consts.ADDON_NAME)
+    def open(self):
+        self.txtCardsToPlay.setText(str(consts.CONFIG["cardsToPlay"]))
+        self.txtLinesPerPlay.setText(str(consts.CONFIG["linesPerPlay"]))
+        if(consts.CONFIG["highContrast"] == True):
+            self.chkHighContrast.setChecked(True)
+        self.exec()

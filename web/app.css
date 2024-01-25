@@ -31,6 +31,7 @@
 
     --btn-bg: #e5e7eb;
     --btn-bg-hover: #cbd5e1;
+    --btn-border: 1px solid transparent;
 
     --cell-border: .5px solid rgba(0,0,0,.05);
 
@@ -67,6 +68,13 @@
 
     --message-color: #f8fafc;
     --message-bg: #334155b3;
+}
+:root[class*=night-mode].high-contrast {
+    --bg-empty: #111827;
+    --bg-inactive: #94a3b8;
+    --cell-border: .5px solid rgba(255,255,255,.25);
+    --message-bg: #334155;
+    --btn-bg: #334155;
 }
 
 /* Picture as background */
@@ -230,7 +238,7 @@ body {
     padding: 0.7rem 1.4rem;
     background: var(--btn-bg);
     color: var(--color);
-    border: none;
+    border: var(--btn-border);
 }
 #actions button:hover {
     background: var(--btn-bg-hover);

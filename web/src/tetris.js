@@ -7,6 +7,9 @@ import { colors, shapes, GRID_STATE } from "./consts"
 // Tetris
 const tetris = new class Tetris {
 
+    linesLeft = 0
+    linesPerPlay = 1
+
     virtualGrid = []
     DOMElement = undefined;
     DOMGrid = undefined;
@@ -111,6 +114,10 @@ const tetris = new class Tetris {
         this.start()
     }
     loadSettings(settings) {
+        this.linesPerPlay = parseInt(settings.linesPerPlay);
+        this.linesLeft = parseInt(settings.linesPerPlay);
+        document.querySelector("#linesleft").textContent = this.linesLeft
+        if(settings.highContrast == true) document.documentElement.classList.add('high-contrast');
         if(settings.backgroundImage != "") {
             this.usePictureAsBackground(settings.backgroundImage)
         }
@@ -314,13 +321,11 @@ const tetris = new class Tetris {
                 cell.classList.remove('completed-animation')
             }
         }
+        this.linesLeft -= completedLines.length;
+        if(this.linesLeft <= 0) this.linesLeft = this.linesPerPlay
+        document.querySelector('#linesleft').textContent = this.linesLeft
         setTimeout(() => {
-<<<<<<< HEAD
-            pycmd('tetris::done')
-=======
-            // pycmd('tetris::done')
             pycmd('tetris::linesCleared::' + completedLines.length)
->>>>>>> a5b38c4 (Commit)
         }, 250)
     }
 
