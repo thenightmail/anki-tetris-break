@@ -1,0 +1,13 @@
+QLineEdit {
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+QLineEdit:focus {
+    border: 1px solid #555;
+}
+
+QCheckBox {
+    spacing: 8px;
+    margin: 4px 0;
+}

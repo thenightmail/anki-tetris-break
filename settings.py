@@ -2,13 +2,19 @@ import os
 from aqt.qt import (
     Qt,
     QVBoxLayout,
+    QHBoxLayout,
     QLabel,
     QDialog,
     QLineEdit,
     QFileDialog,
     QPushButton,
     QPixmap,
-    QCheckBox
+    QCheckBox,
+    QWidget,
+    QGroupBox,
+    QDrag,
+    QDropEvent,
+    QMimeData
 )
 from aqt import mw
 
@@ -27,6 +33,10 @@ class SettingsDialog(QDialog):
         self.setWindowTitle(consts.ADDON_TITLE + " Settings")
 
         self.layout = QVBoxLayout()
+        
+        with open(consts.ADDON_PATH + "/style-settings.qss", "r") as f:
+            _style = f.read()
+            self.setStyleSheet(_style)
 
         # Cards to play
         self.lbCardsToPlay = QLabel("Number of cards needed to play the game")
@@ -45,23 +55,34 @@ class SettingsDialog(QDialog):
         # self.layout.addWidget(self.separator1)
 
         # High contrast
-        self.lbHighContrast = QLabel("High contrast")
-        self.layout.addWidget(self.lbHighContrast)
+        # self.lbHighContrast = QLabel("High contrast")
+        # self.layout.addWidget(self.lbHighContrast)
         self.chkHighContrast = QCheckBox()
+        self.chkHighContrast.setText("High contrast")
+        # self.layout.addWidget(self.chkHighContrast)
+        
+        # self.highContrastLayout = QHBoxLayout()
+        # self.highContrastLayout.setContentsMargins(0, 0, 0, 0)
+        # self.highContrastLayout.addWidget(self.lbHighContrast)
+        # self.highContrastLayout.addWidget(self.chkHighContrast, stretch=1)
+        # self.highContrast = QWidget()
+        # self.highContrast.setLayout(self.highContrastLayout)
         self.layout.addWidget(self.chkHighContrast)
+        
 
         # Background image
         self.backgroundImage = consts.CONFIG["backgroundImage"]
         self.backgroundImagePath = (
             consts.ADDON_PATH + "/web/" + consts.CONFIG["backgroundImage"]
         )
-
+        
         self.lbBgImg = QLabel("Background image")
-        self.layout.addWidget(self.lbBgImg)
+        # self.layout.addWidget(self.lbBgImg)
 
         self.previewBgImg = QLabel()
         self.previewBgImg.setFixedWidth(200)
         self.previewBgImg.setFixedHeight(200)
+        self.previewBgImg.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.previewBgImg.setPixmap(
             QPixmap(self.backgroundImagePath).scaled(
                 self.previewBgImg.size(),
@@ -69,23 +90,50 @@ class SettingsDialog(QDialog):
                 transformMode=Qt.TransformationMode.SmoothTransformation,
             )
         )
-        self.layout.addWidget(self.previewBgImg)
+        self.previewBgImg.setStyleSheet(
+            "QLabel { border: 1px solid #555; }"
+        )
+        # self.layout.addWidget(self.previewBgImg)
 
         self.btnBgImg = QPushButton("Select / Replace Image", self)
+        self.btnBgImg.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.btnBgImg.clicked.connect(self.selectBgImg)
 
         self.btnBgImgClear = QPushButton("Clear Image", self)
+        self.btnBgImgClear.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.btnBgImgClear.clicked.connect(self.clearBgImg)
-        self.layout.addWidget(self.btnBgImg)
-        self.layout.addWidget(self.btnBgImgClear)
+        
+        self.imgBtnsLayout = QHBoxLayout()
+        self.imgBtnsLayout.addWidget(self.btnBgImg)
+        self.imgBtnsLayout.addWidget(self.btnBgImgClear)
+        self.imgBtns = QWidget()
+        self.imgBtns.setLayout(self.imgBtnsLayout)
+        # self.layout.addWidget(self.imgBtns)
+        
+
+        self.imgBox = QGroupBox()
+        self.imgBoxLayout = QVBoxLayout()
+        self.imgBox.setLayout(self.imgBoxLayout)
+        self.imgBoxLayout.addWidget(self.lbBgImg)
+        self.imgBoxLayout.addWidget(self.previewBgImg)
+        self.imgBoxLayout.addWidget(self.imgBtns)
+        self.layout.addWidget(self.imgBox)
 
         # Save and cancel buttons
         self.btnSave = QPushButton("Save Settings", self)
+        self.btnSave.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.btnSave.clicked.connect(self.save)
-        self.layout.addWidget(self.btnSave)
+        # self.layout.addWidget(self.btnSave)
         self.btnCancel = QPushButton("Cancel", self)
         self.btnCancel.clicked.connect(self.reject)
-        self.layout.addWidget(self.btnCancel)
+        # self.layout.addWidget(self.btnCancel)
+        
+        self.bottomBtnsLayout = QHBoxLayout()
+        self.bottomBtnsLayout.addWidget(self.btnSave)
+        self.bottomBtnsLayout.addWidget(self.btnCancel)
+        self.bottomBtns = QWidget()
+        self.bottomBtns.setLayout(self.bottomBtnsLayout)
+        self.layout.addWidget(self.bottomBtns)
 
         self.setLayout(self.layout)
 
@@ -105,6 +153,7 @@ class SettingsDialog(QDialog):
             )
             self.backgroundImage = bgImg
             settings["backgroundImage"] = bgImg
+        
         mw.addonManager.writeConfig(consts.ADDON_NAME, settings)
         consts.CONFIG = mw.addonManager.getConfig(consts.ADDON_NAME)
         
