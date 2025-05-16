@@ -8,7 +8,14 @@ The addon settings screen can be accessed via Tools -> Add-ons -> Tetris Break (
 
 ## Ideas
 ### TODO: Create a way to study perfect clear setups and solutions
-
++ remove useless elements from the tetris engine
++ add to engine:
+- srs
+- hard drop
+- gravity
+- keyboard settings
+- ...
++ figure out how to make a note type that interacts with the tetris engine.
 ### Types of cards for studying
 + Fumen Practice : Given fumen, get flash cards for each piece placement.
 + Opener Practice : Given fumen for setup and PC number, get flash cards for
