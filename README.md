@@ -7,15 +7,15 @@ The addon settings screen can be accessed via Tools -> Add-ons -> Tetris Break (
 ![Alt text](preview/addon-preview.gif?raw=true "Addon Preview")
 
 ## Ideas
-+ Create a way to study perfect clear setups and solutions
-+ Card generation with genanki?
-+ Types of cards for studying
- + Fumen Practice : Given fumen, get flash cards for each piece placement.
- + Opener Practice : Given fumen for setup and PC number, get flash cards for
-   each queue to build that setup.
- + Puzzle Practice : Given graph.bin and fumen, generates puzzles to help user.
- + Random Puzzles : Given graph.bin and a queue, generates puzzles for that
-   queue.
- + Specific Puzzles : Given graph.bin and board state, finds the solutions to
-   that boardstate and generates all puzzles.
+### TODO: Create a way to study perfect clear setups and solutions
+
+### Types of cards for studying
++ Fumen Practice : Given fumen, get flash cards for each piece placement.
++ Opener Practice : Given fumen for setup and PC number, get flash cards for
+  each queue to build that setup.
++ Puzzle Practice : Given graph.bin and fumen, generates puzzles to help user.
++ Random Puzzles : Given graph.bin and a queue, generates puzzles for that
+  queue.
++ Specific Puzzles : Given graph.bin and board state, finds the solutions to
+  that boardstate and generates all puzzles.
 
