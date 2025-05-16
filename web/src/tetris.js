@@ -540,7 +540,7 @@ window.closeMessage = () => {
 }
 
 function startTetris() {
-    tetris.init('#grid', 14, 14 * 2)
+    tetris.init('#grid', 10, 14 * 2)
     tetris.useNextBlock(document.querySelector('#nextblock'))
     player.useScoreboard(document.querySelector("#scoreboard"))
     player.useHistory(document.querySelector("#history"))
