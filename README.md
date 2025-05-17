@@ -7,6 +7,7 @@ The addon settings screen can be accessed via Tools -> Add-ons -> Tetris Break (
 ![Alt text](preview/addon-preview.gif?raw=true "Addon Preview")
 
 ## Ideas
+### This is put on hold. currently I am using genanki to generate links to a practice website.
 ### TODO: Create a way to study perfect clear setups and solutions
 + remove useless elements from the tetris engine
 + add to engine:
